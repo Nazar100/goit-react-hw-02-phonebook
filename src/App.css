@@ -1,5 +1,7 @@
 .container {
-  margin-left: 25%;
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
 }
 h1 {
   font-size: 30px;
