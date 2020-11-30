@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import s from './ContactsForm.module.css';
 
@@ -9,9 +10,9 @@ class ContactsForm extends Component {
   };
 
   handleInput = e => {
-    const target = e.currentTarget.name;
+    const targetName = e.currentTarget.name;
 
-    this.setState({ [target]: e.currentTarget.value });
+    this.setState({ [targetName]: e.currentTarget.value });
   };
 
   handleSubmit = e => {
@@ -58,3 +59,7 @@ class ContactsForm extends Component {
 }
 
 export default ContactsForm;
+
+ContactsForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

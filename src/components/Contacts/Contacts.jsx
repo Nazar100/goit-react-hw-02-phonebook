@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import s from './Contacts.module.css';
 
 export default function Contacts({ contacts, deleteContact }) {
@@ -23,3 +25,13 @@ export default function Contacts({ contacts, deleteContact }) {
     </ul>
   );
 }
+
+Contacts.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+    }),
+  ),
+};
