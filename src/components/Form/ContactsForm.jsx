@@ -31,8 +31,8 @@ class ContactsForm extends Component {
     const { name, number } = this.state;
     const { checkExistingContacts } = this.props;
 
-    if (name === '' || number === '') {
-      alert('some input is empty');
+    if (!name || !number) {
+      alert('Some input is empty');
       return false;
     }
 
