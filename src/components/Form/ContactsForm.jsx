@@ -9,21 +9,34 @@ class ContactsForm extends Component {
     number: '',
   };
 
-  handleInput = e => {
-    const targetName = e.currentTarget.name;
+  handleInput = ({ target }) => {
+    const { name, value } = target;
 
-    this.setState({ [targetName]: e.currentTarget.value });
+    this.setState({ [name]: value });
   };
 
   handleSubmit = e => {
     e.preventDefault();
     const { name, number } = this.state;
 
-    if (name === '' || number === '') return;
+    const isValidFrom = this.validateFrom();
+    if (!isValidFrom) return;
 
-    this.props.onSubmit([name, number]);
+    this.props.onSubmit({ name, number });
 
     this.setState({ name: '', number: '' });
+  };
+
+  validateFrom = () => {
+    const { name, number } = this.state;
+    const { checkExistingContacts } = this.props;
+
+    if (name === '' || number === '') {
+      alert('some input is empty');
+      return false;
+    }
+
+    return checkExistingContacts(name);
   };
 
   render() {
@@ -44,7 +57,7 @@ class ContactsForm extends Component {
           <label>
             Enter the number
             <input
-              type="number"
+              type="tel"
               value={number}
               name="number"
               onChange={this.handleInput}

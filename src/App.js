@@ -18,38 +18,24 @@ class App extends Component {
     filter: '',
   };
 
-  hasContact = false;
-
   checkExistingContacts = name => {
-    this.state.contacts.forEach(contact => {
-      if (contact.name === name) {
-        alert(`${name} is already in your contacts`);
-        this.hasContact = true;
-        return;
-      }
+    const isExistingContact = !!this.state.contacts.find(contact => {
+      return contact.name === name;
     });
+
+    isExistingContact && alert(`${name} is already in your contacts`);
+
+    return !isExistingContact;
   };
 
   addContact = contact => {
-    this.hasContact = false;
-
-    let name = contact[0];
-    let number = contact[1];
-
-    this.checkExistingContacts(name);
-
-    if (this.hasContact) {
-      return;
-    }
-
-    const item = {
+    const newContact = {
       id: shortid.generate(),
-      name,
-      number,
+      ...contact,
     };
 
     this.setState(({ contacts }) => ({
-      contacts: [item, ...contacts],
+      contacts: [newContact, ...contacts],
     }));
   };
 
@@ -69,17 +55,24 @@ class App extends Component {
     });
   };
 
-  render() {
+  getVisibleContacts = () => {
     const normalizedFilter = this.state.filter.toLowerCase();
-    const filteredContacts = this.state.contacts.filter(contact => {
+    return this.state.contacts.filter(contact => {
       return contact.name.toLowerCase().includes(normalizedFilter);
     });
+  };
+
+  render() {
+    const filteredContacts = this.getVisibleContacts();
 
     return (
       <div className="container">
         <div>
           <h1>Phonebook</h1>
-          <ContactsForm onSubmit={this.addContact} />
+          <ContactsForm
+            onSubmit={this.addContact}
+            checkExistingContacts={this.checkExistingContacts}
+          />
           <Filter value={this.state.filter} onChange={this.filterChange} />
         </div>
         <div>
